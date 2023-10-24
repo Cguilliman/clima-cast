@@ -1,0 +1,59 @@
+# Use root/example as user/password credentials
+version: '3.9'
+
+services:
+
+  mongo:
+    container_name: clima-cast-mongo
+    networks:
+      - clima-cast-network
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+#  mongo-express:
+#    container_name: clima-cast-mongo-express
+#    image: mongo-express
+#    restart: always
+#    ports:
+#      - 8081:8081
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+#      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:2701
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
+    container_name: clima-cast-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - es_config:/usr/share/elasticsearch/config
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - clima-cast-network
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+
+
+volumes:
+  mongo_data:
+  es_data:
+  es_config:
+
+
+networks:
+  clima-cast-network:

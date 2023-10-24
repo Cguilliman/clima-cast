@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "scraper"
+version = "0.1.0"
+description = ""
+authors = ["Ihor <cguilliman@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.6"
+requests = "^2.31.0"
+aiohttp = "^3.8.6"
+isort = "^5.12.0"
+black = "^23.10.0"
+python-dotenv = "^1.0.0"
+grpcio-tools = "^1.59.0"
+loguru = "^0.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

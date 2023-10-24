@@ -1,0 +1,7 @@
+2023-10-24 13:29:28.031 | INFO     | __main__:<module>:123 - Scraper process has started
+2023-10-24 13:29:28.053 | INFO     | __main__:run_processing:115 - Start scraping loop
+2023-10-24 13:29:29.101 | INFO     | __main__:main:104 - Received 245
+2023-10-24 13:29:34.636 | INFO     | __main__:run_processing:117 - Finish scraping loop
+2023-10-24 13:34:28.168 | INFO     | __main__:run_processing:115 - Start scraping loop
+2023-10-24 13:34:29.177 | INFO     | __main__:main:104 - Received 245
+2023-10-24 13:34:30.103 | INFO     | __main__:run_processing:117 - Finish scraping loop

@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+
+  weather:
+    container_name: clima-cast-weather
+    build:
+      context: ..
+      dockerfile: provisioning/services/weather/Dockerfile
+    restart: always
+    networks:
+      - clima-cast-network
+    volumes:
+      - ../weather:/service/app
+    env_file:
+      - ../weather/.env
+    environment:
+      - MONGO_LINKS=mongodb://admin:admin@mongo:27017/
+      - MONGO_DB=clima-cast
+      - MONGO_COLLECTION=weather
+
+      - ELASTIC_HOST=elasticsearch
+      - ELASTIC_PORT=9200
+      - ELASTIC_USER_SSL=False
+
+  scraper:
+    container_name: clima-cast-scraper
+    build:
+      context: ..
+      dockerfile: provisioning/services/scraper/Dockerfile
+    restart: always
+    networks:
+      - clima-cast-network
+    volumes:
+      - ../scraper:/service/app
+    env_file:
+      - ../scraper/.env
+    environment:
+      - SCRAPER_HOST=weather
+
+  gateway:
+    container_name: clima-cast-gateway
+    build:
+      dockerfile: provisioning/services/gateway/Dockerfile
+      context: ..
+    volumes:
+      - ../gateway:/go/src/clima-cast-gateway
+    expose:
+      - 8000
+    networks:
+      - clima-cast-network
+
+  nginx:
+    container_name: clima-cast-nginx
+    build:
+      context: provisioning/services/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway
+    networks:
+      - clima-cast-network
+
+
+
+networks:
+  clima-cast-network:

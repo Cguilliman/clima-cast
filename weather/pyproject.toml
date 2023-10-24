@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "weather"
+version = "0.1.0"
+description = ""
+authors = ["Ihor <cguilliman@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.4"
+black = "^23.10.0"
+isort = "^5.12.0"
+grpcio = "^1.59.0"
+grpcio-tools = "^1.59.0"
+loguru = "^0.7.2"
+pydantic = "^2.4.2"
+pymongo = "^4.5.0"
+python-dotenv = "^1.0.0"
+icecream = "^2.1.3"
+elasticsearch = "^8.10.1"
+elasticsearch-dsl = "^8.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

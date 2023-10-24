@@ -1,0 +1,46 @@
+syntax = "proto3";
+option go_package = "weather_proto/weather_proto";
+
+import "google/protobuf/timestamp.proto";
+
+message WeatherEntity {
+    message SubWeather {
+        map<string, string> value = 1;
+    }
+    map<string, string> main = 1;
+    repeated SubWeather weather = 2;
+    map<string, string> wind = 3;
+}
+
+message CapitalEntity {
+    string name = 1;
+    float lat = 2;
+    float lng = 3;
+
+}
+
+message UpdateCapitalRequest {
+    CapitalEntity capital = 1;
+    WeatherEntity weather = 2;
+    google.protobuf.Timestamp send_at = 3;
+}
+
+message EmptyResponse {}
+
+message FetchByCapitalNameRequest {
+    string name = 1;
+}
+
+message CapitalWeather {
+    CapitalEntity capital = 1;
+    WeatherEntity weather = 2;
+}
+
+message CapitalsWeatherResponse {
+    repeated CapitalWeather data = 1;
+}
+
+service Weather {
+    rpc Update (UpdateCapitalRequest) returns (EmptyResponse);
+    rpc FetchByCapitalName (FetchByCapitalNameRequest) returns (CapitalsWeatherResponse);
+}
