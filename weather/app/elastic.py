@@ -1,5 +1,6 @@
 from elasticsearch_dsl import connections
 from app import settings
+from loguru import logger
 
 
 def init_connection():
@@ -12,3 +13,6 @@ def init_connection():
             }
         ],
     )
+    conn = connections.get_connection()
+    logger.info(conn)
+    logger.info(conn.ping())

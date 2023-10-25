@@ -38,8 +38,8 @@ services:
       - influxdb_data:/var/lib/influxdb
 
   grafana:
-#    image: grafana/grafana:8.0.2
-    image: grafana/grafana
+    image: grafana/grafana:8.0.2
+#    image: grafana/grafana
     container_name: clima-cast-grafana
     depends_on:
       - influxdb

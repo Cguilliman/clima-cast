@@ -4,6 +4,7 @@ package main
 
 import (
 	"clima-cast-gateway/controllers"
+	"clima-cast-gateway/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,7 @@ func main() {
 	router := gin.Default()
 
 	publicRouter := router.Group("/weather")
+	publicRouter.Use(middlewares.HttpConnectionMiddleware())
 	publicRouter.GET("/helthcheck", controllers.IsAlive)
 	publicRouter.POST("/capital-name", controllers.FetchByCapitalNameController)
 
