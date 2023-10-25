@@ -1,0 +1,68 @@
+version: '3.6'
+services:
+
+  telegraf:
+#    image: telegraf:1.18-alpine
+    image: telegraf
+    platform: linux/amd64
+    container_name: clima-cast-telegraf
+    volumes:
+    - ./monitoring/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    links:
+      - influxdb
+    networks:
+      - clima-cast-network
+    ports:
+#    - '127.0.0.1:8125:8125/udp'
+#    - '8125:8125/udp'
+    - '8125:8125'
+
+  influxdb:
+    image: influxdb:1.8-alpine
+    platform: linux/amd64
+    container_name: clima-cast-influxdb
+#    env_file: configuration.env
+    environment:
+      - INFLUXDB_DB=influx
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+    networks:
+      - clima-cast-network
+    ports:
+      - '8086:8086'
+#      - '127.0.0.1:8086:8086'
+    volumes:
+      - ./:/imports
+      - influxdb_data:/var/lib/influxdb
+
+  grafana:
+#    image: grafana/grafana:8.0.2
+    image: grafana/grafana
+    container_name: clima-cast-grafana
+    depends_on:
+      - influxdb
+#    env_file: configuration.env
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=
+    links:
+      - influxdb
+    networks:
+      - clima-cast-network
+    ports:
+      - '3000:3000'
+#      - '127.0.0.1:3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
+
+networks:
+  clima-cast-network:
+
+volumes:
+  grafana_data: {}
+  influxdb_data: {}
